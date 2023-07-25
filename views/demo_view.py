@@ -15,9 +15,9 @@ class demoTest(HTTPMethodView):
     async def get(self, request):
         params = request.ctx.params
         print(params)
-
-        # arq = await get_arq_obj()
-        # await arq.enqueue_job("testdemo")
+        # arq使用demo
+        arq = await get_arq_obj()
+        await arq.enqueue_job("testdemo")
         return json({'code': 200, 'msg': 'successful'})
 
     async def post(self, request):
