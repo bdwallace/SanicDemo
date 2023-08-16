@@ -22,15 +22,6 @@ TORTOISE_ORM = {
 
 
 
-SystemSetting = {
-    "DNS_CHECK_HZ": 3,  # dns检查频率
-    "DNS_CHECK_TIMES": 50,  # DNS检查次数
-    "CHALLENGE_HZ": 3,  # 挑战频率
-    "ALERT_TIMES": 1,  # 告警次数
-    "RENEW_DAYS": 7,  # 提前续费天数
-    "REFRESH_HZ": 1,  # 刷新频率
-    "WAIT_TIME": 60
-}
 
 #
 # REDIS_CONFIG = {
