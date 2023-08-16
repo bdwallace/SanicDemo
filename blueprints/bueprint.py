@@ -4,7 +4,7 @@ from utils import byte2str
 from views import demoTest
 
 
-bp = Blueprint("demo", url_prefix='/api', version='v1')
+bp = Blueprint("OSS", url_prefix='/api', version='v1')
 bp.add_route(demoTest.as_view(), '/demo', name='demo', methods=['GET', 'POST'])
 
 @bp.on_request

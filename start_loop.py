@@ -1,4 +1,5 @@
 import asyncio, os, logging
+import nest_asyncio
 import uvloop
 from arq import cron
 from arq.connections import RedisSettings
@@ -22,7 +23,7 @@ app.blueprint(bp)  # 注册蓝图
 # workers = app.config.get('WORKERS')
 # app.ctx.debug = app.config.get('DEBUG')
 app.config['DEBUG'] = True
-
+nest_asyncio.apply()
 
 async def startup(ctx):
     ctx['arq'] = AsyncClient()
@@ -80,15 +81,6 @@ async def before_server_start(app, loop):
 async def after_server_start(app, loop):
 
     print("Async Server started")
-    worker = create_worker(WorkerSettings, job_timeout=86400)
-    print('Async arq running')
-    try:
-        await worker.async_run()
-        await worker.close()
-    # except asyncio.exceptions.CancelledError as e:
-    #     print('arq连接关闭异常', e)
-    except Exception as e:
-        print('arq连接关闭异常', e)
 
 
 
@@ -115,6 +107,9 @@ def main():
     loop.run_until_complete(server.startup())
     loop.run_until_complete(server.before_start())
     loop.run_until_complete(server.after_start())
+
+    worker = create_worker(WorkerSettings, job_timeout=86400)
+    asyncio.run(worker.async_run())
 
     try:
         loop.run_forever()
