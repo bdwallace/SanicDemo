@@ -65,7 +65,7 @@ async def before_server_start(app, loop):
     # 连接数据库
     try:
         # print(TORTOISE_ORM['db_url'],TORTOISE_ORM['modules'])
-        await Tortoise.init(db_url=TORTOISE_ORM['db_url'], modules=TORTOISE_ORM['modules'])
+        await Tortoise.init(db_url=TORTOISE_ORM['db_url'], modules=TORTOISE_ORM['modules'], timezone='Asia/Shanghai')
     except Exception as e:
         print('数据库连接失败：', e)
         return 0
@@ -96,7 +96,7 @@ async def after_server_stop(app, loop):
 
 def main():
 
-    serv_coro = app.create_server(host="0.0.0.0", port=5000, return_asyncio_server=True)
+    serv_coro = app.create_server(host="0.0.0.0", port=5000, return_asyncio_server=True, access_log=True)
     # # 设置uvloop相关
     asyncio.set_event_loop(uvloop.new_event_loop())
     loop = asyncio.get_event_loop()

@@ -65,7 +65,7 @@ async def before_server_start(app, loop):
     # 连接数据库
     try:
         # print(TORTOISE_ORM['db_url'],TORTOISE_ORM['modules'])
-        await Tortoise.init(db_url=TORTOISE_ORM['db_url'], modules=TORTOISE_ORM['modules'])
+        await Tortoise.init(db_url=TORTOISE_ORM['db_url'], modules=TORTOISE_ORM['modules'], timezone='Asia/Shanghai')
     except Exception as e:
         print('数据库连接失败：', e)
         return 0
@@ -107,4 +107,4 @@ async def after_server_stop(app, loop):
 
 if __name__ == "__main__":
     # main()
-    app.run(host="0.0.0.0", port=5000, auto_reload=True, debug=False)
+    app.run(host="0.0.0.0", port=5000, auto_reload=True, debug=False, access_log=True)

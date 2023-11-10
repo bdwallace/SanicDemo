@@ -20,10 +20,11 @@ logger = logging.getLogger("sanic.root")
 redis = SanicRedis()
 
 async def get_arq_obj():
-    redis_arq = await create_pool(RedisSettings(host=REDIS_CONFIG['REDIS_HOST'],
-                                   port=REDIS_CONFIG["REDIS_PORT"],
-                                   password=REDIS_CONFIG["REDIS_PASSWORD"])
-                                  )
+    redis_arq = await create_pool(
+        RedisSettings(host=REDIS_CONFIG.get('REDIS_HOST'),
+                      port=int(REDIS_CONFIG.get("REDIS_PORT")),
+                      password=REDIS_CONFIG.get("REDIS_PASSWORD"))
+    )
     return redis_arq
 
 # __all__ = ['logger', 'redis']
