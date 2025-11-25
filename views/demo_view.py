@@ -10,15 +10,25 @@ from core import get_arq_obj
 
 
 async def testdemo(ctx):
+    count = 0
     while True:
         await asyncio.sleep(3)
         print('耗时任务测试')
+        count += 1
+        if count >= 3:
+            break
 
 
 
 async def auto_inject(app):
-    await asyncio.sleep(5)
-    print('耗时任务测试', app.name)
+    count = 0
+    while True:
+        await asyncio.sleep(3)
+        print('耗时任务测试', app.name)
+        count += 1
+        if count >= 3:
+            break
+
 
 class demoTest(HTTPMethodView):
     async def __fetchData(self, page=1, pagesize=10, search=""):
@@ -65,8 +75,8 @@ class demoTest(HTTPMethodView):
         params = request.args
         print(params.get('search'))
         # 异步任务方案1
-        arq = await get_arq_obj()
-        await arq.enqueue_job("testdemo")
+        # arq = await get_arq_obj()
+        # await arq.enqueue_job("testdemo")
         # 异步任务方案2
-        # request.app.add_task(auto_inject)
+        request.app.add_task(auto_inject)
         return json({'code': 200, 'msg': 'successful'})
