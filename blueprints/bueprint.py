@@ -1,7 +1,4 @@
-import logging, ast, cgi, io
-from sanic.blueprints import Blueprint
-from utils import byte2str
-from views import demoTest
+import logging, cgi, io
 from .urls import bp
 
 

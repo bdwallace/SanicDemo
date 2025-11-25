@@ -16,7 +16,6 @@ TORTOISE_ORM = {
 }
 
 
-
 REDIS_CONFIG = {
     "REDIS_HOST": os.environ.get("REDIS_HOST", '192.168.85.10'),
     "REDIS_PORT": os.environ.get("REDIS_PORT", 6388),
