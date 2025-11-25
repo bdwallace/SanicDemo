@@ -1,19 +1,44 @@
 import logging, cgi, io
+
+from sanic import json
+
+from utils import redis_get
 from .urls import bp
 
 
 @bp.on_request
-def request_middleware(request):
+async def request_middleware(request):
     # 在视图之前执行
     try:
-        pass
+        token = request.cookies.get("token")
+
+        if not token:
+            token = request.headers.Authorization
+
+        result = await redis_get(token)
+        # print(result, token)
+        # user = await UsersModel.filter(user_name="admin").first()
+        # payload = {"user_name": user.user_name, "password": user.password}
+        # token = jwt.encode(payload, user.password)
+
+        if "/v1/api/login" not in request.url:
+            if not result:
+                print('您未登录,请先登录')
+                # return json({"code": 401, "msg": "You are unauthorized!"})
+        elif request.method != "POST":
+            if not result:
+                print('您未登录,请先登录')
+                # return json({"code": 401, "msg": "You are unauthorized!"})
+
+        if "/v1/api/login" in request.url or 'v1/api/grant' in request.url:
+            return
 
     except Exception as e:
-        logging.error('Middleware error:', e)
+            logging.error('Middleware error:', e)
 
 
 @bp.on_response
-def response_middleware(request, response):
+async def response_middleware(request, response):
     # 在视图之后执行
     CORS_HEADERS = {
         'Access-Control-Allow-Origin': '*',
