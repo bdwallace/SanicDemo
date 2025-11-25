@@ -9,16 +9,13 @@ from blueprints import bp
 from tortoise import Tortoise
 from core import redis
 from settings import TORTOISE_ORM, REDIS_CONFIG
-
-
-
-
+from views import testdemo
 
 app = Sanic("Demo")
 
 
 app.config.update(REDIS_CONFIG)
-app.config.update({"WORKERS": 2})
+app.config.update({"WORKERS": 5})
 redis.init_app(app)
 
 app.blueprint(bp)  # 注册蓝图
@@ -51,7 +48,7 @@ class WorkerSettings:
 
 
     # 监听任务函数
-    functions = [dingshi_task]
+    functions = [dingshi_task, testdemo]
 
     # 计划任务
     cron_jobs = [

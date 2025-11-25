@@ -14,6 +14,12 @@ async def testdemo(ctx):
         await asyncio.sleep(3)
         print('耗时任务测试')
 
+
+
+async def auto_inject(app):
+    await asyncio.sleep(5)
+    print('耗时任务测试', app.name)
+
 class demoTest(HTTPMethodView):
     async def __fetchData(self, page=1, pagesize=10, search=""):
         if type(page) == str:
@@ -31,10 +37,12 @@ class demoTest(HTTPMethodView):
         return data, total
 
     async def get(self, request):
-        params = request.args
+        params = request.args_query
         page = params.get("page", 1)
         pagesize = params.get("pagesize", 15)
         search = params.get('search', "")
+        spencer = params.get("spencer")
+        print(type(params['spencer']), spencer)
         data, total = await self.__fetchData(page, pagesize, search)
         return json({"code": 200, 'msg': 'Success', 'data': data, 'total': total})
 
@@ -56,7 +64,9 @@ class demoTest(HTTPMethodView):
     async def put(self, request):
         params = request.args
         print(params.get('search'))
-        # arq使用demo
+        # 异步任务方案1
         arq = await get_arq_obj()
         await arq.enqueue_job("testdemo")
+        # 异步任务方案2
+        # request.app.add_task(auto_inject)
         return json({'code': 200, 'msg': 'successful'})
