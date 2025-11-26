@@ -32,7 +32,7 @@ async def auto_inject(app):
             break
 
 
-class demoTest(HTTPMethodView):
+class DemoTestView(HTTPMethodView):
     async def __fetchData(self, page=1, pagesize=10, search=""):
         if type(page) == str:
             page = int(page)
