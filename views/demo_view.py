@@ -42,7 +42,7 @@ class DemoTestView(HTTPMethodView):
         offset_num = (page - 1) * pagesize
         condition = Q(Q(user_name__icontains=search) | Q(email__icontains=search) | Q(login_ip__icontains=search) | Q(login_time__icontains=search))
         total = await Demo.filter(condition).distinct().count()
-        result = await (Demo.filter(condition).offset(offset_num).limit(pagesize).order_by("user_name")).distinct()
+        result = await (Demo.filter(condition).offset(offset_num).limit(pagesize).order_by("user_name")).distinct().values()
 
         data = datatime_serialize(result)
         data = uuid_serialize(data)
