@@ -21,11 +21,11 @@ async def testdemo(ctx):
 
 
 
-async def auto_inject(app):
+async def auto_inject(name):
     count = 0
     while True:
         await asyncio.sleep(0.5)
-        print('耗时任务测试', app.name)
+        print('耗时任务测试', name)
         count += 1
         if count >= 3:
             print('任务完成')
@@ -76,13 +76,14 @@ class DemoTestView(HTTPMethodView):
 
     async def put(self, request):
         params = request.args
-        print(params.get('search'))
+        payload = request.json
+        print(payload)
         # 异步任务方案1
         # arq = await get_arq_obj()
         # await arq.enqueue_job("testdemo")
         # 异步任务方案2
         for i in range(3):
-            request.app.add_task(auto_inject, name=f"task_name{i}")
+            request.app.add_task(auto_inject(name=['auto_inject_name']), name=f"task_name{i}")
             # 查看已有的异步任务
             tasks = request.app.get_task(f"task_name{i}")
             print(tasks)
