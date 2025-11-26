@@ -11,14 +11,12 @@ from blueprints import bp
 from tortoise import Tortoise
 from core import redis
 from settings import TORTOISE_ORM, REDIS_CONFIG
-
-
+from sanic_ext import Extend
 
 
 app = Sanic("Demo")
+Extend(app)
 app.config.update(REDIS_CONFIG)
-
-app.config.update({"WORKER": 3})
 redis.init_app(app)
 
 app.blueprint(bp)  # 注册蓝图
@@ -99,7 +97,7 @@ async def after_server_stop(app, loop):
 def main():
 
     serv_coro = app.create_server(host="0.0.0.0", port=5000, return_asyncio_server=True, access_log=True)
-    # # 设置uvloop相关
+    # 设置uvloop相关
     asyncio.set_event_loop(uvloop.new_event_loop())
     loop = asyncio.get_event_loop()
     serv_task = asyncio.ensure_future(serv_coro, loop=loop)

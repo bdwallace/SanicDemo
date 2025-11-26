@@ -10,9 +10,11 @@ from tortoise import Tortoise
 from core import redis
 from settings import TORTOISE_ORM, REDIS_CONFIG
 from views import testdemo
+from sanic_ext import Extend
+
 
 app = Sanic("Demo")
-
+Extend(app)
 
 app.config.update(REDIS_CONFIG)
 app.config.update({"WORKERS": 5})
@@ -104,4 +106,4 @@ async def after_server_stop(app, loop):
 
 if __name__ == "__main__":
     # main()
-    app.run(host="0.0.0.0", port=5000, auto_reload=True, debug=False, access_log=True)
+    app.run(host="0.0.0.0", port=5000, workers=2, auto_reload=True, debug=False, access_log=True)
