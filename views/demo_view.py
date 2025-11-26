@@ -51,7 +51,7 @@ class DemoTestView(HTTPMethodView):
         data = uuid_serialize(data)
         return data, total
 
-    @rate_limit(10, 10)
+    @rate_limit(10, 10)  # 限速装饰器
     async def get(self, request):
         params = request.args
         page = params.get("page", 1)
