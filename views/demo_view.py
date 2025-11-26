@@ -92,31 +92,3 @@ class DemoTestView(HTTPMethodView):
             tasks = request.app.get_task(f"task_name{i}")
             print(tasks)
         return json({'code': 200, 'msg': 'successful'})
-
-
-def test():
-    import requests
-    import json
-
-    url = "http://192.168.85.10:5000/v1/api/demo?page=1&pagesize=100"
-
-    payload = json.dumps({
-        "code": "456745",
-        "data": [
-            "sdfg",
-            "ertuyesdfg",
-            "awedf"
-        ]
-    })
-    headers = {
-        'Content-Type': 'application/json',
-        'Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiJzcGVuY2VyIiwicGFzc3dvcmQiOiJiMGJkYmM3NzBkZGNkYzM2ZTkwY2FhMTY5YmNkYzQ3ZTAyOGVjN2JiIiwibG9naW5fdGltZSI6IjIwMjUtMTEtMTMgMTE6MTk6MzQuODcwNjA0In0.VjRUyp78zvbxiTRxAqoWhvdkeVS1uraZptcFb3-Sqns; user_name=spencer'
-    }
-
-    response = requests.request("GET", url, headers=headers, data=payload)
-
-    print(response.text)
-
-if __name__ == "__main__":
-    for i in range(100):
-        test()
