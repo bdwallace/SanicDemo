@@ -58,9 +58,8 @@ class DemoTestView(HTTPMethodView):
         pagesize = params.get("pagesize", 20)
         search = params.get('search', "")
         spencer = params.get("spencer")
-        return json({"code": 200, 'msg': 'Success'})
-        # data, total = await self.__fetchData(page, pagesize, search)
-        # return json({"code": 200, 'msg': 'Success', 'data': data, 'total': total})
+        data, total = await self.__fetchData(page, pagesize, search)
+        return json({"code": 200, 'msg': 'Success', 'data': data, 'total': total})
 
     async def post(self, request):
         data = request.json
