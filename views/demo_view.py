@@ -33,15 +33,15 @@ async def auto_inject(app):
 
 
 class DemoTestView(HTTPMethodView):
-    async def __fetchData(self, page=1, pagesize=10, search=""):
+
+    async def __fetchData(self, page=1, pagesize=20, search=""):
         if type(page) == str:
             page = int(page)
         if type(pagesize) == str:
             pagesize = int(pagesize)
         offset_num = (page - 1) * pagesize
         condition = Q(Q(user_name__icontains=search) | Q(email__icontains=search) | Q(login_ip__icontains=search) | Q(login_time__icontains=search))
-        total = await Demo.filter(condition).distinct()
-        total = len(total)
+        total = await Demo.filter(condition).distinct().count()
         result = await (Demo.filter(condition).offset(offset_num).limit(pagesize).order_by("user_name")).distinct()
 
         data = datatime_serialize(result)
@@ -51,7 +51,7 @@ class DemoTestView(HTTPMethodView):
     async def get(self, request):
         params = request.args_query
         page = params.get("page", 1)
-        pagesize = params.get("pagesize", 15)
+        pagesize = params.get("pagesize", 20)
         search = params.get('search', "")
         spencer = params.get("spencer")
         print(type(params['spencer']), spencer)
