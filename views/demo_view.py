@@ -49,12 +49,11 @@ class DemoTestView(HTTPMethodView):
         return data, total
 
     async def get(self, request):
-        params = request.args_query
+        params = request.args
         page = params.get("page", 1)
         pagesize = params.get("pagesize", 20)
         search = params.get('search', "")
         spencer = params.get("spencer")
-        print(type(params['spencer']), spencer)
         data, total = await self.__fetchData(page, pagesize, search)
         return json({"code": 200, 'msg': 'Success', 'data': data, 'total': total})
 
@@ -66,11 +65,13 @@ class DemoTestView(HTTPMethodView):
         await redis_set('name', 'spencer')
         df = await redis_get('name')
         print('redis数据', df)
+        await Demo.create(user_name="spencer", password="xxxxx", email='spencer@gmail.com')
         return json({'code': 200, 'status': 'success'})
 
         await redis_setdict('test', data)
         df = await redis_getdict('test')
         print('redis数据', type(df), df)
+        await Demo.create(user_name="spencer", password="xxxxx", email='spencer@gmail.com')
         return json({'code': 200, 'status': 'success', 'data': df})
 
     async def put(self, request):
