@@ -1,7 +1,6 @@
 # Sanic框架Demo
 Sanic 版本为最新版本 23.3.0, Python版本为3.9。
 此Demo包含mysql、redis、arq等配置。
-Sanic最新版本变化有点大,此Demo只适用与23.3.0,若安装的是其他的版本，会有很多稀奇古怪的问题。
 ## 安装
 pip install -r requirements.txt
 ## 使用
