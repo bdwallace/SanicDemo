@@ -28,7 +28,7 @@ def rate_limit(limit=5, window=60):
             timestamps = [t for t in timestamps if now - t < window]
 
             if len(timestamps) >= limit:
-                return json({"code": 429, "msg": "该接口调用过于频繁"}, status=429)
+                return json({"code": 429, "msg": "API calls are too frequent"}, status=429)
 
             timestamps.append(now)
             history[ip] = timestamps
