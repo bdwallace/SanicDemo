@@ -12,10 +12,11 @@ from core import get_arq_obj
 async def testdemo(ctx):
     count = 0
     while True:
-        await asyncio.sleep(3)
+        await asyncio.sleep(1)
         print('耗时任务测试')
         count += 1
         if count >= 3:
+            print('任务完成')
             break
 
 
@@ -23,10 +24,11 @@ async def testdemo(ctx):
 async def auto_inject(app):
     count = 0
     while True:
-        await asyncio.sleep(3)
+        await asyncio.sleep(0.5)
         print('耗时任务测试', app.name)
         count += 1
         if count >= 3:
+            print('任务完成')
             break
 
 
@@ -78,5 +80,9 @@ class demoTest(HTTPMethodView):
         # arq = await get_arq_obj()
         # await arq.enqueue_job("testdemo")
         # 异步任务方案2
-        request.app.add_task(auto_inject)
+        for i in range(3):
+            request.app.add_task(auto_inject, name=f"task_name{i}")
+            # 查看已有的异步任务
+            tasks = request.app.get_task(f"task_name{i}")
+            print(tasks)
         return json({'code': 200, 'msg': 'successful'})
