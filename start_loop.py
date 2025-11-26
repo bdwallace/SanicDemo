@@ -17,6 +17,7 @@ from settings import TORTOISE_ORM, REDIS_CONFIG
 
 app = Sanic("Demo")
 app.config.update(REDIS_CONFIG)
+app.config.update({"WORKER": 3})
 redis.init_app(app)
 
 app.blueprint(bp)  # 注册蓝图
